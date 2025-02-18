@@ -1,0 +1,90 @@
+
+name: PHPUnit Tests
+
+on:
+  push:
+    branches:
+      - main  
+  pull_request:
+    branches:
+      - '*'  # Trigger the workflow on pull requests targeting any branch
+
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: List all files in app
+        run: ls -R app
+
+      - name: Detect framework version change
+        run: |
+          FILE_PATH="app/Config/Paths.php"
+
+           # Ensure the file exists
+               if [ ! -f "$FILE_PATH" ]; then
+            echo "Error: $FILE_PATH does not exist!"
+             exit 1
+             fi
+
+           # Extract system directory value
+          SYSTEM_DIR=$(grep -Eo 'public string \$systemDirectory = .*;' "$FILE_PATH" | cut -d '=' -f2- | tr -d " ';")
+
+           # Print the extracted value
+           echo "System Directory: $SYSTEM_DIR"
+
+
+      # Step 2: Set up PHP with necessary extensions
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1' # 
+          extensions: mbstring, intl, json, zip, sodium, bcmath
+          ini-values: date.timezone=UTC
+          coverage: none
+
+      # Step 3: Get Composer cache directory
+      - name: Get composer cache directory
+        run: echo "COMPOSER_CACHE_FILES_DIR=$(composer config cache-files-dir)" >> $GITHUB_ENV
+
+      # Step 4: Cache Composer dependencies
+      - name: Cache composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.COMPOSER_CACHE_FILES_DIR }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      # Step 5: Install Composer dependencies (creates vendor folder)
+      - name: Install dependencies
+        run: |
+          if [ -f composer.lock ]; then
+            composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+          else
+            composer update --no-progress --no-interaction --prefer-dist --optimize-autoloader
+          fi
+
+      # Step 6: Verify vendor directory is created
+      - name: Verify vendor directory
+        run: |
+          if [ -d "vendor" ]; then
+            echo "Vendor directory exists and dependencies are installed."
+          else
+            echo "Vendor directory not found!"
+            exit 1
+          fi
+      # Step 7: Run PHPUnit tests
+      - name: Run PHPUnit tests
+        run: vendor/bin/phpunit 
+        env:
+          APP_ENV: testing
+          DB: sqlite 
+          TERM: xterm-256color
+
+   
+           
