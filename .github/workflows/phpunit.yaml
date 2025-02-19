@@ -78,7 +78,24 @@ jobs:
             echo "Vendor directory not found!"
             exit 1
           fi
-      # Step 7: Run PHPUnit tests
+          
+      # Step 6.2: Verify vendor directory is created
+      - name: Verify codeIgniter installation
+        run: |
+         
+           if [ -f "vendor/codeigniter4/framework/system/Boot.php" ]; then
+             echo "Boot.php exists. CodeIgniter installed correctly."
+           else
+             echo "Boot.php is missing! Check Composer installation."
+             exit 1
+            fi
+       # Step 7: Debug File Paths (Optional)
+      - name: Debug File Paths
+        run: |
+           ls -la vendor/codeigniter4/framework/system
+           ls -la vendor/codeigniter4/framework/system/Test
+
+      # Step 8: Run PHPUnit tests
       - name: Run PHPUnit tests
         run: vendor/bin/phpunit 
         env:
