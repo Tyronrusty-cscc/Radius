@@ -98,7 +98,8 @@ jobs:
       # Step 8: Run PHPUnit tests
       - name: Run PHPUnit tests
         run: |
-           APPPATH=vendor/codeigniter4/framwork/system/ vendor/bin/phpunit 
+          export  APPPATH=vendor/codeigniter4/framwork/system/ 
+          vendor/bin/phpunit 
 
         env:
           APP_ENV: testing
