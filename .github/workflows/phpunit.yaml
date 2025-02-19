@@ -97,7 +97,8 @@ jobs:
 
       # Step 8: Run PHPUnit tests
       - name: Run PHPUnit tests
-        run: vendor/bin/phpunit 
+        run: vendor/bin/phpunit --bootstrap=vendor/codeigniter4/framework/system/Test/bootstrap.php --debug
+
         env:
           APPPATH : ${{ github.workspace}}/vendor/codeigniter4/framwork/system/
           APP_ENV: testing
