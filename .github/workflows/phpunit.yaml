@@ -97,10 +97,10 @@ jobs:
 
       # Step 8: Run PHPUnit tests
       - name: Run PHPUnit tests
-        run: vendor/bin/phpunit --bootstrap=vendor/codeigniter4/framework/system/Test/bootstrap.php --debug
+        run: |
+           APPPATH=vendor/codeigniter4/framwork/system/ vendor/bin/phpunit 
 
         env:
-          APPPATH : ${{ github.workspace}}/vendor/codeigniter4/framwork/system/
           APP_ENV: testing
           DB: sqlite 
           TERM: xterm-256color
