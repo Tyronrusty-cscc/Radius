@@ -14,16 +14,6 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:5.7
-        options: --health-cmd="mysqladmin ping --silent" --health-start-period=30s --health-retries=5 --health-timeout=5s --health-interval=5s
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: test_database
-        ports:
-          - 3306:3306
-    
 
     steps:
       # Step 1: Checkout the repository
@@ -107,34 +97,7 @@ jobs:
            ls -la vendor/codeigniter4/framework/system/Test
 
 
-    # Create dummy database configuration for testing
-      - name: Create dummy database config for testing
-        run: |
-           echo "<?php
-           namespace Config;
-           use CodeIgniter\Database\Config;
-           class Database extends Config\Database {
-            public \$default = [
-                'DSN'      => '',
-                'hostname' => '127.0.0.1',
-                'username' => 'root',
-                'password' => 'root',
-                'database' => 'test_database',
-                'DBDriver' => 'MySQLi',
-                'DBPrefix' => '',
-                'pConnect' => false,
-                'DBDebug'  => (ENVIRONMENT !== 'production'),
-                'cacheOn'  => false,
-                'charset'  => 'utf8',
-                'DBCollat' => 'utf8_general_ci',
-                'swapPre'  => '',
-                'encrypt'  => false,
-                'compress' => false,
-                'strictOn' => false,
-                'failover' => [],
-                'port'     => 3306
-            ];
-           }" > app/Config/Database.php
+ 
 
     # Set environment variables for testing
       - name: Set environment variables
@@ -143,16 +106,7 @@ jobs:
           echo "DB=mysql" >> $GITHUB_ENV
 
 
-  # Delay to ensure MySQL is ready before proceeding with the tests
-
-      - name: Wait for MySQL to be ready
-        run: |
-          for i in $(seq 1 30); do
-            echo "Waiting for MySQL... Attempt $i"
-            mysqladmin ping -h localhost --user=root --password=$MYSQL_ROOT_PASSWORD --silent && break
-            sleep 1
-          done
-
+  
       # Step 8: Run PHPUnit tests
       - name: Run PHPUnit tests
         run:   vendor/bin/phpunit 

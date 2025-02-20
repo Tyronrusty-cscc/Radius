@@ -126,6 +126,6 @@ nb-configuration.xml
 #/phpunit*.xml
 # saml permission file
 app/Config/Permissions.usr
-app/Config/Database.php 
+
 auth.json
 
