@@ -147,13 +147,10 @@ jobs:
 
       - name: Wait for MySQL to be ready
         run: |
-          for i in {1..30}; do
-           if docker exec $(docker ps -q --filter ancestor=mysql:5.7) mysqladmin --user=root --password=root --host=127.0.0.1 --silent; then
-             echo "MySQL is ready!"
-             break
-          fi
-          echo "waiting for MySQL..."
-            sleep
+          for i in $(seq 1 30); do
+            echo "Waiting for MySQL... Attempt $i"
+            mysqladmin ping -h localhost --user=root --password=$MYSQL_ROOT_PASSWORD --silent && break
+            sleep 1
           done
 
       # Step 8: Run PHPUnit tests
