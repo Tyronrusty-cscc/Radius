@@ -79,5 +79,15 @@ class Paths
      */
     public string $viewDirectory = __DIR__ . '/../Views';
 
-    
+        public function __construct()
+    {
+        // Check if running in GitHub Actions
+        if (getenv('GITHUB_ACTIONS') === 'true') {
+            $this->systemDirectory = realpath(__DIR__ . '/../../vendor/codeigniter4/framework/system')
+                ?: 'vendor/codeigniter4/framework/system';
+        } else {
+            // Default system path for local development
+            $this->systemDirectory = 'C:\data\Codeigniter-4.6.0-Shared\system';
+        }
+    }
 }
