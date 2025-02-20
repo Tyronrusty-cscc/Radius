@@ -150,7 +150,7 @@ jobs:
 
       # Step 8: Run PHPUnit tests
       - name: Run PHPUnit tests
-        run:   vendor/bin/phpunit 
+        run:   vendor/bin/phpunit tests/unit
 
         env:
           APP_ENV: testing
