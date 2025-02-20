@@ -14,6 +14,17 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:5.7
+        options: --health-cmd="mysqladmin ping --silent" --health-start-period=30s --health-retries=5 --health-timeout=5s --health-interval=5s
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: test_database
+        ports:
+          - 3306:3306
+    
+
     steps:
       # Step 1: Checkout the repository
       - name: Checkout repository
@@ -104,11 +115,11 @@ jobs:
            class Database {
             public \$default = [
                 'DSN'      => '',
-                'hostname' => 'localhost',
-                'username' => '',
-                'password' => '',
-                'database' => ':memory:',
-                'DBDriver' => 'SQLite',
+                'hostname' => '127.0.0.1',
+                'username' => 'root',
+                'password' => 'root',
+                'database' => 'test_database',
+                'DBDriver' => 'MySQLi',
                 'DBPrefix' => '',
                 'pConnect' => false,
                 'DBDebug'  => (ENVIRONMENT !== 'production'),
@@ -128,9 +139,14 @@ jobs:
       - name: Set environment variables
         run: |
           echo "APP_ENV=testing" >> $GITHUB_ENV
-          echo "DB=sqlite" >> $GITHUB_ENV
+          echo "DB=mysql" >> $GITHUB_ENV
 
 
+  # Delay to ensure MySQL is ready before proceeding with the tests
+
+      - name: Wait for MySQL to be ready
+        run: |
+         docker exec -it $(docker ps -q --filter ancestor=mysql:5.7) mysqladmin --user=root --password=root --host=127.0.0.1 --wait=30s ping
 
       # Step 8: Run PHPUnit tests
       - name: Run PHPUnit tests
