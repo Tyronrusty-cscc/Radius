@@ -95,6 +95,43 @@ jobs:
            ls -la vendor/codeigniter4/framework/system
            ls -la vendor/codeigniter4/framework/system/Test
 
+
+    # Create dummy database configuration for testing
+      - name: Create dummy database config for testing
+        run: |
+           echo "<?php
+           namespace Config;
+           class Database {
+            public \$default = [
+                'DSN'      => '',
+                'hostname' => 'localhost',
+                'username' => '',
+                'password' => '',
+                'database' => ':memory:',
+                'DBDriver' => 'SQLite',
+                'DBPrefix' => '',
+                'pConnect' => false,
+                'DBDebug'  => (ENVIRONMENT !== 'production'),
+                'cacheOn'  => false,
+                'charset'  => 'utf8',
+                'DBCollat' => 'utf8_general_ci',
+                'swapPre'  => '',
+                'encrypt'  => false,
+                'compress' => false,
+                'strictOn' => false,
+                'failover' => [],
+                'port'     => 3306
+            ];
+           }" > app/Config/Database.php
+
+    # Set environment variables for testing
+      - name: Set environment variables
+        run: |
+          echo "APP_ENV=testing" >> $GITHUB_ENV
+          echo "DB=sqlite" >> $GITHUB_ENV
+
+
+
       # Step 8: Run PHPUnit tests
       - name: Run PHPUnit tests
         run:   vendor/bin/phpunit 
