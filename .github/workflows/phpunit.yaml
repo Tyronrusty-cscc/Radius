@@ -146,7 +146,7 @@ jobs:
 
       - name: Wait for MySQL to be ready
         run: |
-         docker exec -it $(docker ps -q --filter ancestor=mysql:5.7) mysqladmin --user=root --password=root --host=127.0.0.1 --wait=30s ping
+         docker exec $(docker ps -q --filter ancestor=mysql:5.7) mysqladmin --user=root --password=root --host=127.0.0.1 --wait=30s ping
 
       # Step 8: Run PHPUnit tests
       - name: Run PHPUnit tests
