@@ -112,7 +112,8 @@ jobs:
         run: |
            echo "<?php
            namespace Config;
-           class Database {
+           use CodeIgniter\Database\Config;
+           class Database extends Config\Database {
             public \$default = [
                 'DSN'      => '',
                 'hostname' => '127.0.0.1',
@@ -146,11 +147,18 @@ jobs:
 
       - name: Wait for MySQL to be ready
         run: |
-         docker exec $(docker ps -q --filter ancestor=mysql:5.7) mysqladmin --user=root --password=root --host=127.0.0.1 --wait=30s ping
+          for i in {1..30}; do
+           if docker exec $(docker ps -q --filter ancestor=mysql:5.7) mysqladmin --user=root --password=root --host=127.0.0.1 --silent; then
+             echo "MySQL is ready!"
+             break
+          fi
+          echo "waiting for MySQL..."
+            sleep
+          done
 
       # Step 8: Run PHPUnit tests
       - name: Run PHPUnit tests
-        run:   vendor/bin/phpunit tests/unit
+        run:   vendor/bin/phpunit 
 
         env:
           APP_ENV: testing
