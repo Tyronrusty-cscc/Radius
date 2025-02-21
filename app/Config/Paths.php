@@ -29,7 +29,7 @@ class Paths
      * the path if the folder is not in the same directory as this file.
      */
     #public string $systemDirectory = __DIR__ . '/../../system';
-	public $systemDirectory = 'C:\data\Codeigniter-4.6.0-Shared\system';
+	public $systemDirectory ;
 
     /**
      * ---------------------------------------------------------------
