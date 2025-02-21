@@ -8,8 +8,7 @@
         stopOnError="false"
         stopOnFailure="false"
         stopOnIncomplete="false"
-        stopOnSkipped="false"
-        cacheDirectory="build/.phpunit.cache">
+        stopOnSkipped="false">
     <coverage 
     includeUncoveredFiles="true" >
          <report>
@@ -24,20 +23,8 @@
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
-      <logging>
-        <log type="testdox-text" target="build/logs/testdox.txt"/>
-        <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false"/>
-    </logging>
-    <source>
-       <include>
-            <directory suffix=".php">./app</directory>
-        </include>
-        <exclude>
-    
-            <directory suffix=".php">./app/Views</directory>
-            <file>./app/Config/Routes.php</file>
-        </exclude>
-    </source>
+
+
     <php>
         <server name="app.baseURL" value="http://example.com/"/>
         <!-- Directory containing phpunit.xml -->
