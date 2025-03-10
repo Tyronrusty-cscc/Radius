@@ -105,14 +105,7 @@ jobs:
           echo "APP_ENV=testing" >> $GITHUB_ENV
           echo "DB=mysql" >> $GITHUB_ENV
 
-      # Step 7.1: Set up environment variables for DB credentials
-      - name: Set up DB environment variables
-        run: |
-           echo "DB_HOST=${{ secrets.DB_HOST }}" >> $GITHUB_ENV
-           echo "DB_USER=${{ secrets.DB_USER }}" >> $GITHUB_ENV
-           echo "DB_PASS=${{ secrets.DB_PASS }}" >> $GITHUB_ENV
-           echo "DB_NAME=${{ secrets.DB_NAME }}" >> $GITHUB_ENV
-
+          
 
       # Debug secret Value
       - name: debug secret value
@@ -120,6 +113,14 @@ jobs:
           echo "DB_HOST is '${{ secrets.DB_HOST }}'"
           echo "DB_HOST length: $(echo -n "${{ secrets.DB_HOST }}" | wc -c)"
 
+
+      # Step 7.1: Set up environment variables for DB credentials
+      - name: Set up DB environment variables
+        run: |
+           echo "DB_HOST=${{ secrets.DB_HOST }}" >> $GITHUB_ENV
+           echo "DB_USER=${{ secrets.DB_USER }}" >> $GITHUB_ENV
+           echo "DB_PASS=${{ secrets.DB_PASS }}" >> $GITHUB_ENV
+           echo "DB_NAME=${{ secrets.DB_NAME }}" >> $GITHUB_ENV
   
       # Step 8: Run PHPUnit tests
       - name: Run PHPUnit tests
