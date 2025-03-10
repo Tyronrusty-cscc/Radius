@@ -113,6 +113,12 @@ jobs:
            echo "DB_PASS=${{ secrets.DB_PASS }}" >> $GITHUB_ENV
            echo "DB_NAME=${{ secrets.DB_NAME }}" >> $GITHUB_ENV
 
+
+      # Debug secret Value
+      - name: debug secret value
+        run: |
+          echo -n "DB_HOST=${{ secrets.DB_HOST}}" | wc -c
+
   
       # Step 8: Run PHPUnit tests
       - name: Run PHPUnit tests
