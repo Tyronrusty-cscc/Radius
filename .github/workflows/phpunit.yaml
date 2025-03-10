@@ -13,6 +13,7 @@ on:
 jobs:
   build-test:
     runs-on: ubuntu-latest
+    environment: testing 
 
 
     steps:
@@ -125,6 +126,7 @@ jobs:
       # Step 8: Run PHPUnit tests
       - name: Run PHPUnit tests
         run:   vendor/bin/phpunit 
+        
 
         env:
           APP_ENV: testing
