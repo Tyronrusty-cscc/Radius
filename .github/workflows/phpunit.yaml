@@ -117,7 +117,8 @@ jobs:
       # Debug secret Value
       - name: debug secret value
         run: |
-          echo -n "DB_HOST=${{ secrets.DB_HOST}}" | wc -c
+          echo "DB_HOST is '${{ secrets.DB_HOST }}'"
+          echo "DB_HOST length: $(echo -n "${{ secrets.DB_HOST }}" | wc -c)"
 
   
       # Step 8: Run PHPUnit tests
