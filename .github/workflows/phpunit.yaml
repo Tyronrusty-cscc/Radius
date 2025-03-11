@@ -15,7 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: testing 
 
-
     steps:
       # Step 1: Checkout the repository
       - name: Checkout repository
@@ -96,18 +95,7 @@ jobs:
         run: |
            ls -la vendor/codeigniter4/framework/system
            ls -la vendor/codeigniter4/framework/system/Test
-
-
- 
-
-    # Set environment variables for testing
-      - name: Set environment variables
-        run: |
-          echo "APP_ENV=testing" >> $GITHUB_ENV
-          echo "DB=mysql" >> $GITHUB_ENV
-
           
-
       # Debug secret Value
       - name: debug secret value
         run: |
@@ -126,7 +114,7 @@ jobs:
       # Step 8: Run PHPUnit tests
       - name: Run PHPUnit tests
         run:   vendor/bin/phpunit 
-        
+
 
         env:
           APP_ENV: testing
