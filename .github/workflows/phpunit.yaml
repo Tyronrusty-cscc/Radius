@@ -13,7 +13,7 @@ on:
 jobs:
   build-test:
     runs-on: ubuntu-latest
-    environment: testing 
+    
 
     steps:
       # Step 1: Checkout the repository
@@ -102,14 +102,6 @@ jobs:
           echo "DB_HOST is '${{ secrets.DB_HOST }}'"
           echo "DB_HOST length: $(echo -n "${{ secrets.DB_HOST }}" | wc -c)"
 
-
-      # Step 7.1: Set up environment variables for DB credentials
-      - name: Set up DB environment variables
-        run: |
-           echo "DB_HOST=${{ secrets.DB_HOST }}" >> $GITHUB_ENV
-           echo "DB_USER=${{ secrets.DB_USER }}" >> $GITHUB_ENV
-           echo "DB_PASS=${{ secrets.DB_PASS }}" >> $GITHUB_ENV
-           echo "DB_NAME=${{ secrets.DB_NAME }}" >> $GITHUB_ENV
   
       # Step 8: Run PHPUnit tests
       - name: Run PHPUnit tests
