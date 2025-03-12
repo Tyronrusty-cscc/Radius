@@ -13,7 +13,7 @@ on:
 jobs:
   build-test:
     runs-on: ubuntu-latest
-
+    environment: testing 
 
     steps:
       # Step 1: Checkout the repository
@@ -95,26 +95,27 @@ jobs:
         run: |
            ls -la vendor/codeigniter4/framework/system
            ls -la vendor/codeigniter4/framework/system/Test
-
-
- 
-
-    # Set environment variables for testing
-      - name: Set environment variables
+          
+      # Debug secret Value
+      - name: debug secret value
         run: |
-          echo "APP_ENV=testing" >> $GITHUB_ENV
-          echo "DB=mysql" >> $GITHUB_ENV
-
+          echo "DB_HOST is '${{ secrets.DB_HOST }}'"
+          echo "DB_HOST length: $(echo -n "${{ secrets.DB_HOST }}" | wc -c)"
 
   
       # Step 8: Run PHPUnit tests
       - name: Run PHPUnit tests
         run:   vendor/bin/phpunit 
 
+
         env:
           APP_ENV: testing
           DB: sqlite 
           TERM: xterm-256color
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          DB_NAME: ${{ secrets.DB_NAME }}
 
    
            
