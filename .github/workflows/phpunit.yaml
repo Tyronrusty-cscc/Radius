@@ -15,8 +15,18 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
     
+                #  Production Deploy Job
+  deploy-production:
+    if: github.ref_name == 'main' || github.base_ref == 'main'
+    runs-on: ubuntu-latest
+    environment: Production
     
-
+  #  Development Deploy Job
+  deploy-development:
+    if: github.ref_name == 'develop' || github.base_ref == 'develop'
+    runs-on: ubuntu-latest
+    environment: Development
+    
     steps:
       # step 0: Debug Branch info
       - name: Debug Branch Info
@@ -127,24 +137,7 @@ jobs:
           DB_DBDriver: ${{ secrets.DB_DBDriver }}
           DB_SCHEMA: ${{ secrets.DB_SCHEMA }}
    
-             #  Production Deploy Job
-  deploy-production:
-    if: github.ref_name == 'main' || github.base_ref == 'main'
-    runs-on: ubuntu-latest
-    environment: Production
 
-    steps:
-      - name: Deploy to Production
-        run: |
-          echo " Deploying to PRODUCTION environment..."
 
-  #  Development Deploy Job
-  deploy-development:
-    if: github.ref_name == 'develop' || github.base_ref == 'develop'
-    runs-on: ubuntu-latest
-    environment: Development
 
-    steps:
-      - name: Deploy to Development
-        run: |
-          echo " Deploying to DEVELOPMENT environment..."
+   
