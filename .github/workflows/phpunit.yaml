@@ -22,7 +22,8 @@ jobs:
         run: |
           echo "github.ref  = $GITHUB_REF"
           echo "github.ref_name = ${{ github.ref_name}}"
-          echo " Computed environment = ${{github.ref_name == 'main' && 'Production' || 'Development'}}"
+          echo "github.base_name = ${{ github.base_ref}}"
+          echo " Computed environment = ${{(github.base_ref || github.ref_name) == 'main' && 'Production' || 'Development'}}"
       # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
