@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main  
+      - develop
   pull_request:
     branches:
       - '*'  # Trigger the workflow on pull requests targeting any branch
@@ -13,7 +14,7 @@ on:
 jobs:
   build-test:
     runs-on: ubuntu-latest
-    environment: ${{(github.base_ref || github.ref_name) == 'main' && 'Production' || 'Development'}}
+    
     
 
     steps:
@@ -126,4 +127,26 @@ jobs:
           DB_DBDriver: ${{ secrets.DB_DBDriver }}
           DB_SCHEMA: ${{ secrets.DB_SCHEMA }}
    
-           
+             #  Production Deploy Job
+  deploy-production:
+    needs: build-test
+    if: github.ref_name == 'main' || github.base_ref == 'main'
+    runs-on: ubuntu-latest
+    environment: Production
+
+    steps:
+      - name: Deploy to Production
+        run: |
+          echo " Deploying to PRODUCTION environment..."
+
+  #  Development Deploy Job
+  deploy-development:
+    needs: build-test
+    if: github.ref_name == 'develop' || github.base_ref == 'develop'
+    runs-on: ubuntu-latest
+    environment: Development
+
+    steps:
+      - name: Deploy to Development
+        run: |
+          echo " Deploying to DEVELOPMENT environment..."
