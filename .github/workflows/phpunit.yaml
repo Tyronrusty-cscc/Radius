@@ -4,7 +4,8 @@ name: PHPUnit Tests
 on:
   push:
     branches:
-      - main  
+      - main
+      - develop  
   pull_request:
     branches:
       - '*'  # Trigger the workflow on pull requests targeting any branch
