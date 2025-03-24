@@ -14,8 +14,10 @@
         "codeigniter4/framework": "^4.6"
     },
     "require-dev": {
+        "codeigniter4/codeigniter4-standard": "^1.1",
         "fakerphp/faker": "^1.9",
         "mikey179/vfsstream": "^1.6",
+        "mockery/mockery": "^1.6",
         "phpunit/phpunit": "9.5"
     },
     "autoload": {
@@ -29,7 +31,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\Support\\": "tests/_support"
+            "Tests\\Support\\": "tests/_support",
+            "App\\Tests\\Unit\\": "app/tests/unit/"
         }
     },
     "config": {
