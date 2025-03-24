@@ -129,7 +129,6 @@ jobs:
    
              #  Production Deploy Job
   deploy-production:
-    needs: build-test
     if: github.ref_name == 'main' || github.base_ref == 'main'
     runs-on: ubuntu-latest
     environment: Production
@@ -141,7 +140,6 @@ jobs:
 
   #  Development Deploy Job
   deploy-development:
-    needs: build-test
     if: github.ref_name == 'develop' || github.base_ref == 'develop'
     runs-on: ubuntu-latest
     environment: Development
