@@ -12,25 +12,10 @@ on:
 
 
 jobs:
-  build-production:
-    name: Deploy to Prod
-    if: github.ref_name == 'main' || github.base_ref == 'main'
-    environment: Production   
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Production secrets accessible"
-
-  build-development:
-    name: Deploy to Development
-    if: github.ref_name == 'develop' || github.base_ref == 'develop'
-    environment: Development   
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "dev secrets accessible"
 
   build-test:
     runs-on: ubuntu-latest
-    
+    environment: ${{ github.ref_name == 'main'|| github.base_ref == 'main' && 'Production' || 'Development'}}
     
 
     steps:
