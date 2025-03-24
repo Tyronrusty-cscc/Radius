@@ -5,30 +5,36 @@ on:
   push:
     branches:
       - main  
-      - develop
   pull_request:
     branches:
       - '*'  # Trigger the workflow on pull requests targeting any branch
 
 
 jobs:
+  build-production:
+    name: Deploy to Prod
+    if: github.ref_name == 'main' || github.base_ref == 'main'
+    environment: Production   
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Production secrets accessible"
+
+  build-development:
+    name: Deploy to Development
+    if: github.ref_name == 'develop' || github.base_ref == 'develop'
+    environment: Development   
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "dev secrets accessible"
+
   build-test:
     runs-on: ubuntu-latest
     
-                #  Production Deploy Job
-  deploy-production:
-    if: github.ref_name == 'main' || github.base_ref == 'main'
-    runs-on: ubuntu-latest
-    environment: Production
     
-  #  Development Deploy Job
-  deploy-development:
-    if: github.ref_name == 'develop' || github.base_ref == 'develop'
-    runs-on: ubuntu-latest
-    environment: Development
-    
+
     steps:
       # step 0: Debug Branch info
+
       - name: Debug Branch Info
         run: |
           echo "github.ref  = $GITHUB_REF"
@@ -137,7 +143,4 @@ jobs:
           DB_DBDriver: ${{ secrets.DB_DBDriver }}
           DB_SCHEMA: ${{ secrets.DB_SCHEMA }}
    
-
-
-
-   
+           
