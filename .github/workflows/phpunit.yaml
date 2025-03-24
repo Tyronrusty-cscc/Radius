@@ -4,20 +4,23 @@ name: PHPUnit Tests
 on:
   push:
     branches:
-      - main  
+      - main
+      - develop  
   pull_request:
     branches:
       - '*'  # Trigger the workflow on pull requests targeting any branch
 
 
 jobs:
+
   build-test:
     runs-on: ubuntu-latest
-    environment: ${{(github.base_ref || github.ref_name) == 'main' && 'Production' || 'Development'}}
+    environment: ${{ github.ref_name == 'main'|| github.base_ref == 'main' && 'Production' || 'Development'}}
     
 
     steps:
       # step 0: Debug Branch info
+
       - name: Debug Branch Info
         run: |
           echo "github.ref  = $GITHUB_REF"
@@ -104,6 +107,7 @@ jobs:
            ls -la vendor/codeigniter4/framework/system
            ls -la vendor/codeigniter4/framework/system/Test
 
+
       # Debug secret Value
       - name: debug secret value
         run: |
@@ -111,6 +115,7 @@ jobs:
           echo "DB_HOST length: $(echo -n "${{ secrets.DB_HOST }}" | wc -c)"
 
   
+      # Step 9: Run PHPUnit tests
       # Step 9: Run PHPUnit tests
       - name: Run PHPUnit tests
         run:   vendor/bin/phpunit 
@@ -125,5 +130,6 @@ jobs:
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_DBDriver: ${{ secrets.DB_DBDriver }}
           DB_SCHEMA: ${{ secrets.DB_SCHEMA }}
+       
    
            
