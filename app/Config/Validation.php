@@ -18,14 +18,16 @@ class Validation extends BaseConfig
      * Stores the classes that contain the
      * rules that are available.
      *
-     * @var list<string>
+     * @var string[]
      */
     public array $ruleSets = [
         Rules::class,
         FormatRules::class,
         FileRules::class,
         CreditCardRules::class,
+        \App\Validation\UserRules::class,
     ];
+
 
     /**
      * Specifies the views that are used to display the

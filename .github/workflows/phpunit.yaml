@@ -13,9 +13,17 @@ on:
 jobs:
   build-test:
     runs-on: ubuntu-latest
-    environment: testing 
+    environment: ${{(github.base_ref || github.ref_name) == 'main' && 'Production' || 'Development'}}
+    
 
     steps:
+      # step 0: Debug Branch info
+      - name: Debug Branch Info
+        run: |
+          echo "github.ref  = $GITHUB_REF"
+          echo "github.ref_name = ${{ github.ref_name}}"
+          echo "github.base_name = ${{ github.base_ref}}"
+          echo " Computed environment = ${{(github.base_ref || github.ref_name) == 'main' && 'Production' || 'Development'}}"
       # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -95,7 +103,7 @@ jobs:
         run: |
            ls -la vendor/codeigniter4/framework/system
            ls -la vendor/codeigniter4/framework/system/Test
-          
+
       # Debug secret Value
       - name: debug secret value
         run: |
@@ -103,10 +111,9 @@ jobs:
           echo "DB_HOST length: $(echo -n "${{ secrets.DB_HOST }}" | wc -c)"
 
   
-      # Step 8: Run PHPUnit tests
+      # Step 9: Run PHPUnit tests
       - name: Run PHPUnit tests
         run:   vendor/bin/phpunit 
-
 
         env:
           APP_ENV: testing
@@ -116,6 +123,7 @@ jobs:
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASS: ${{ secrets.DB_PASS }}
           DB_NAME: ${{ secrets.DB_NAME }}
-
+          DB_DBDriver: ${{ secrets.DB_DBDriver }}
+          DB_SCHEMA: ${{ secrets.DB_SCHEMA }}
    
            
