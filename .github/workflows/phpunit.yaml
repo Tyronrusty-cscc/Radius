@@ -15,7 +15,7 @@ jobs:
 
   build-test:
     runs-on: ubuntu-latest
-    environment: "${{ (github.base_ref == 'main' || github.ref_name == 'main') && 'Production' || 'Development' }}"
+    environment: " ${{ ((github.base_ref == 'main' || github.ref_name == 'main') && 'Production' || 'Development') }}"
     
 
     steps:
