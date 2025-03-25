@@ -37,20 +37,15 @@ jobs:
       - name: Detect framework version change
         run: |
           FILE_PATH="app/Config/Paths.php"
-
            # Ensure the file exists
                if [ ! -f "$FILE_PATH" ]; then
             echo "Error: $FILE_PATH does not exist!"
              exit 1
              fi
-
            # Extract system directory value
           SYSTEM_DIR=$(grep -Eo 'public string \$systemDirectory = .*;' "$FILE_PATH" | cut -d '=' -f2- | tr -d " ';")
-
            # Print the extracted value
            echo "System Directory: $SYSTEM_DIR"
-
-
       # Step 2: Set up PHP with necessary extensions
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -80,7 +75,6 @@ jobs:
           else
             composer update --no-progress --no-interaction --prefer-dist --optimize-autoloader
           fi
-
       # Step 6: Verify vendor directory is created
       - name: Verify vendor directory
         run: |
@@ -106,14 +100,11 @@ jobs:
         run: |
            ls -la vendor/codeigniter4/framework/system
            ls -la vendor/codeigniter4/framework/system/Test
-
-
       # Debug secret Value
       - name: debug secret value
         run: |
           echo "DB_HOST is '${{ secrets.DB_HOST }}'"
           echo "DB_HOST length: $(echo -n "${{ secrets.DB_HOST }}" | wc -c)"
-
   
       # Step 9: Run PHPUnit tests
       # Step 9: Run PHPUnit tests
@@ -131,5 +122,3 @@ jobs:
           DB_DBDriver: ${{ secrets.DB_DBDriver }}
           DB_SCHEMA: ${{ secrets.DB_SCHEMA }}
        
-   
-           
